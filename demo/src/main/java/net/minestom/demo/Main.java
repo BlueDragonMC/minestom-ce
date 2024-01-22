@@ -13,7 +13,6 @@ import net.minestom.server.command.CommandManager;
 import net.minestom.server.event.server.ServerListPingEvent;
 import net.minestom.server.extras.lan.OpenToLAN;
 import net.minestom.server.extras.lan.OpenToLANConfig;
-import net.minestom.server.extras.optifine.OptifineSupport;
 import net.minestom.server.instance.block.BlockManager;
 import net.minestom.server.ping.ResponseData;
 import net.minestom.server.utils.identity.NamedAndIdentified;
@@ -24,8 +23,9 @@ import java.time.Duration;
 public class Main {
 
     public static void main(String[] args) {
-        System.setProperty("minestom.use-new-chunk-sending", "true");
         System.setProperty("minestom.experiment.pose-updates", "true");
+
+        MinecraftServer.setCompressionThreshold(0);
 
         MinecraftServer minecraftServer = MinecraftServer.init();
 
@@ -60,6 +60,8 @@ public class Main {
         commandManager.register(new DisplayCommand());
         commandManager.register(new NotificationCommand());
         commandManager.register(new TestCommand2());
+        commandManager.register(new ConfigCommand());
+        commandManager.register(new SidebarCommand());
 
         commandManager.setUnknownCommandCallback((sender, command) -> sender.sendMessage(Component.text("Unknown command", NamedTextColor.RED)));
 
@@ -103,9 +105,7 @@ public class Main {
 
         PlayerInit.init();
 
-        OptifineSupport.enable();
-
-        //VelocityProxy.enable("rBeJJ79W4MVU");
+//        VelocityProxy.enable("abcdef");
         //BungeeCordProxy.enable();
 
         //MojangAuth.init();

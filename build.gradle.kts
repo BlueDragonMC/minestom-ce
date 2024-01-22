@@ -1,3 +1,5 @@
+import java.time.Duration
+
 plugins {
     `java-library`
     alias(libs.plugins.blossom)
@@ -9,14 +11,16 @@ plugins {
 
 // Read env vars (used for publishing generally)
 version = System.getenv("MINESTOM_VERSION") ?: "dev"
-var channel = System.getenv("MINESTOM_CHANNEL") ?: "local" // local, snapshot, release
+val channel = System.getenv("MINESTOM_CHANNEL") ?: "local" // local, snapshot, release
+
+val shortDescription = "1.20.4 Lightweight Minecraft server"
 
 allprojects {
     apply(plugin = "java")
 
     group = "net.minestom"
     version = rootProject.version
-    description = "Lightweight and multi-threaded Minecraft server implementation"
+    description = shortDescription
 
     repositories {
         mavenCentral()
@@ -114,6 +118,11 @@ tasks {
         useStaging.set(true)
         this.packageGroup.set("dev.hollowcube")
 
+        transitionCheckOptions {
+            maxRetries.set(360) // 1 hour
+            delayBetween.set(Duration.ofSeconds(10))
+        }
+
         repositories.sonatype {
             nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
             snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
@@ -133,8 +142,8 @@ tasks {
         from(project.components["java"])
 
         pom {
-            name.set("minestom-ce")
-            description.set("Lightweight and multi-threaded 1.19.3 Minecraft server")
+            name.set(this@create.artifactId)
+            description.set(shortDescription)
             url.set("https://github.com/hollow-cube/minestom-ce")
 
             licenses {

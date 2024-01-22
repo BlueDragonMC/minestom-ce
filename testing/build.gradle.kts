@@ -1,6 +1,6 @@
 plugins {
     `java-library`
-//    `maven-publish`
+    `maven-publish`
 }
 
 group = "net.minestom.testing"
@@ -16,14 +16,14 @@ dependencies {
     runtimeOnly(libs.junit.suite.engine)
 }
 
-//publishing {
-//    publications {
-//        create<MavenPublication>("maven") {
-//            groupId = "net.minestom.testing"
-//            artifactId = "testing"
-//            version = "1.0"
-//
-//            from(components["java"])
-//        }
-//    }
-//}
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "net.minestom.testing"
+            artifactId = "testing"
+            version = "1.0"
+
+            from(components["java"])
+        }
+    }
+}
